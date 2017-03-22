@@ -56,14 +56,16 @@ var updateDates2 = function() {
                 // if RSU or ESPP, but before 2012 or after 2013
                 // use the market value
                 
-                while(stockPrice == 0){
+
+                do {
                     stockPrice = adobeStockValues[date] || 0;
-                    // console.debug("\t\t go back 1 day and get close price", date, stockPrice)
+                    if (stockPrice > 0) break;
+                    console.debug("\t\t go back 1 day and get close price", date, stockPrice)
                     // go back 1 day nasdaq was closed  
-                    var dateMinus1 = new Date(dateObj.getTime()-24*60*60*1000)
-                    var d=dateMinus1.toISOString().split("T")[0].split('-')
-                    date = d[1]+"/"+d[2]+"/"+d[0]
-                }
+                    var dateObj = new Date(dateObj.getTime()-24*60*60*1000);
+                    date = dateObj.toLocaleString('en-us', {year: 'numeric', month: '2-digit', day: '2-digit'})
+                } while(stockPrice == 0)
+                
             } else {
                 // if ESPP between and taxes were not paid on the diff
                 // use the grant purchase value
