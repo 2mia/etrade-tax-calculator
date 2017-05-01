@@ -21,11 +21,6 @@ var updateDates2 = function(continuation) {
         var settled = [];
         var hadError = false;
         for (var i = 0; i < orderCount; i++) {
-            // Skip the orders that were not settled.
-            if (scope.oh.openOrder[i].orderStatus !== "Settled") {
-                continue;
-            }
-
             var element = $('#orderTable-collapse' + i + " > div");
             var itemScope = angular.element(element).scope();
 
@@ -43,6 +38,10 @@ var updateDates2 = function(continuation) {
                     matchingOrder = currentOrder;
                     break;
                 }
+            }
+
+            if (matchingOrder.orderStatus !== "Settled") {
+                continue;
             }
 
             // Merge the data model from both scopes.
