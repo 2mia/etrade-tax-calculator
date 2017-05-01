@@ -11,8 +11,21 @@
 
 var updateDates2 = function() {
     
-    var scope = angular.element($('.ordersGrantTbl')).scope()
-    var settled = scope.oh.openOrder.filter(function(e){return e.orderStatus == "Settled"})
+    var scope = angular.element($('.ordersGrantTbl')).scope();
+    var orderCount = scope.oh.openOrder.length;
+
+    var settled = [];
+    for (var i = 0; i < orderCount; i++) {
+        if (scope.oh.openOrder[i].orderStatus !== "Settled") {
+            continue;
+        }
+
+        var element = $('#orderTable-collapse' + i + " > div");
+        var itemScope = angular.element(element).scope();
+
+        var settledItem = Object.assign({}, itemScope.openOrder, scope.oh.openOrder[i]);
+        settled.push(settledItem);
+    }
 
     var totalProfits = 0;
 
