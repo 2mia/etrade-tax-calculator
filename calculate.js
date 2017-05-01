@@ -36,8 +36,17 @@ var updateDates2 = function(continuation) {
                 break;
             }
 
+            var matchingOrder = null;
+            for (var j = 0; j < orderCount; j++) {
+                var currentOrder = scope.oh.openOrder[j];
+                if (itemScope.openOrder.orderNumber === currentOrder.orderNumber) {
+                    matchingOrder = currentOrder;
+                    break;
+                }
+            }
+
             // Merge the data model from both scopes.
-            var settledItem = Object.assign({}, itemScope.openOrder, scope.oh.openOrder[i]);
+            var settledItem = Object.assign({}, itemScope.openOrder, matchingOrder);
             settled.push(settledItem);
         }
 
